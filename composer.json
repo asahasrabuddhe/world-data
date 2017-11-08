@@ -1,0 +1,23 @@
+{
+    "name": "asahasrabuddhe/world-data",
+    "description": "",
+    "keywords": [""],
+    "authors": [
+        {
+            "name": "Ajitem Sahasrabuddhe",
+            "email": "ajitem.s@outlook.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Asahasrabuddhe\\WorldData\\": "src/"
+        }
+    },
+    "require": {
+        "symfony/console": "^3.3",
+        "guzzlehttp/guzzle": "^6.3",
+        "symfony/dom-crawler": "^3.3",
+        "symfony/css-selector": "^3.3"
+    },
+    "license": "MIT"
+}

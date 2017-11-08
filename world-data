@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+
+use Asahasrabuddhe\WorldData\Console\Command\DownloadDataCommand;
+
+$app = new Application('World Data', '0.1');
+
+$app->add( new DownloadDataCommand() );
+
+$app->run();
