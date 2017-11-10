@@ -22,5 +22,15 @@
         "symfony/dom-crawler": "^3.3",
         "symfony/css-selector": "^3.3"
     },
-    "license": "MIT"
+    "license": "MIT",
+     "extra": {
+        "laravel": {
+            "providers": [
+                "Asahasrabuddhe\\WorldData\\Providers\\WorldDataServiceProvider"
+            ],
+            "aliases": {
+                "Countries": "Asahasrabuddhe\\WorldData\\Facades\\WorldDataFacade"
+            }
+        }
+    }
 }
