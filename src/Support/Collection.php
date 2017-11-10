@@ -141,9 +141,9 @@ class Collection extends IlluminateCollection
 
             $operator = '=';
         }
-        if (array_key_exists($key, config('countries.maps'))) {
-            $key = config('countries.maps')[$key];
-        }
+        // if (array_key_exists($key, config('countries.maps'))) {
+        //     $key = config('countries.maps')[$key];
+        // }
 
         if (method_exists($this, 'where'.ucfirst($key))) {
             return $this->{'where'.ucfirst($key)}($value);
