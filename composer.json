@@ -1,7 +1,9 @@
 {
     "name": "asahasrabuddhe/world-data",
-    "description": "",
-    "keywords": [""],
+    "type": "Laravel Package",
+    "description": "A package that contains data about the various countries, states and cities in the world.",
+    "keywords": ["laravel", "countries", "city", "state", "province"],
+    "homepage": "https://github.com/asahasrabuddhe/world-data",
     "authors": [
         {
             "name": "Ajitem Sahasrabuddhe",
@@ -14,6 +16,7 @@
         }
     },
     "require": {
+        "php": ">=7.0.0",
         "symfony/console": "^3.3",
         "guzzlehttp/guzzle": "^6.3",
         "symfony/dom-crawler": "^3.3",

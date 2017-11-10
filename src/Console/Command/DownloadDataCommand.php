@@ -5,6 +5,7 @@ namespace Asahasrabuddhe\WorldData\Console\Command;
 use Illuminate\Console\Command;
 use Asahasrabuddhe\WorldData\GeoNames;
 use Asahasrabuddhe\WorldData\WorldDataService;
+use Asahasrabuddhe\WorldData\Support\CountryRepository;
 
 class DownloadDataCommand extends Command
 {
@@ -51,25 +52,25 @@ class DownloadDataCommand extends Command
             return false;
         }
 
-        $countries = new WorldDataService;
+        $countries = new WorldDataService(new CountryRepository());
 
         $countryCodes = $countries->all()->pluck('ISO')->map(function( $item, $key ) {
             return $item . '.zip';
         });
 
-        // $statePaths = [];
-        // try {
-        //     $statePaths[] = $this->downloadFiles( $this, $countryCodes->toArray() );
-        // } catch ( \Exception $e ) {
-        //     $this->error( $e->getMessage() );
-        //     return false;
-        // }
+        $statePaths = [];
+        try {
+            $statePaths[] = $this->downloadFiles( $this, $countryCodes->toArray() );
+        } catch ( \Exception $e ) {
+            $this->error( $e->getMessage() );
+            return false;
+        }
 
-        // $countryPaths = $countries->all()->pluck('ISO')->map(function( $item, $key ) {
-        //     return dirname(dirname(dirname(__DIR__))) . $item . '.zip';
-        // });
+        $countryPaths = $countries->all()->pluck('ISO')->map(function( $item, $key ) {
+            return dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . $item . '.zip';
+        });
 
-        $this->unzip(dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'IN.zip');
+        $this->unzipFiles($countryPaths->toArray());
 
         return true;
     }
