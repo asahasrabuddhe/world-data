@@ -3,35 +3,36 @@
 namespace Asahasrabuddhe\WorldData\Support;
 
 use Exception;
-use Illuminate\Support\Arr;
-use Illuminate\Support\HigherOrderCollectionProxy;
 use Illuminate\Support\Collection as IlluminateCollection;
+use Illuminate\Support\HigherOrderCollectionProxy;
 
 class Collection extends IlluminateCollection
 {
-	private $stateCityKeys = [
-		'geonameid',
-		'name',
-		'asciiname',
-		'alternatenames',
-		'latitude',
-		'longitude',
-		'feature class',
-		'feature code',
-		'country code',
-		'cc2',
-		'admin1 code',
-		'admin2 code',
-		'admin3 code',
-		'admin4 code',
-		'population',
-		'elevation',
-		'dem',
-		'timezone',
-		'modification date'
-	];
-	/**
+    private $stateCityKeys = [
+        'geonameid',
+        'name',
+        'asciiname',
+        'alternatenames',
+        'latitude',
+        'longitude',
+        'feature class',
+        'feature code',
+        'country code',
+        'cc2',
+        'admin1 code',
+        'admin2 code',
+        'admin3 code',
+        'admin4 code',
+        'population',
+        'elevation',
+        'dem',
+        'timezone',
+        'modification date',
+    ];
+
+    /**
      * Collection constructor.
+     *
      * @param array $items
      */
     public function __construct($items = [])
@@ -41,49 +42,49 @@ class Collection extends IlluminateCollection
         $this->registerMacros();
     }
 
-
-	public function registerMacros()
+    public function registerMacros()
     {
-    	static::macro('states', function() {
-    		ini_set('memory_limit', -1);
-    		$f = fopen( dirname(dirname(__DIR__)) . '/data/' . $this->pluck('ISO')[0] . '.txt', 'r' );
-    		$state = [];
-    		if( $f )
-			{
-				while( ($line = fgets($f)) !== false )
-				{
-					$tmp = explode("\t", $line);
-					$tmp = array_combine($this->stateCityKeys, $tmp);
-					if( $tmp['feature class'] == 'A' && $tmp['feature code'] == 'ADM1' )
-						$state[] = $tmp;
-				}
-			}
-    		return new Collection($state);
-    	});
+        static::macro('states', function () {
+            ini_set('memory_limit', -1);
+            $f = fopen(dirname(dirname(__DIR__)).'/data/'.$this->pluck('ISO')[0].'.txt', 'r');
+            $state = [];
+            if ($f) {
+                while (($line = fgets($f)) !== false) {
+                    $tmp = explode("\t", $line);
+                    $tmp = array_combine($this->stateCityKeys, $tmp);
+                    if ($tmp['feature class'] == 'A' && $tmp['feature code'] == 'ADM1') {
+                        $state[] = $tmp;
+                    }
+                }
+            }
 
-    	static::macro('cities', function() {
-    		ini_set('memory_limit', -1);
-    		$f = fopen( dirname(dirname(__DIR__)) . '/data/' . $this->pluck('country code')[0] . '.txt', 'r' );
-    		$state = [];
-    		if( $f )
-			{
-				while( ($line = fgets($f)) !== false )
-				{
-					$tmp = explode("\t", $line);
-					$tmp = array_combine($this->stateCityKeys, $tmp);
-					if( $tmp['feature class'] == 'P' && $tmp['admin1 code'] == $this->pluck('admin1 code')[0] )
-						$state[] = $tmp;
-				}
-			}
-    		return new Collection($state);
-    	});
+            return new Collection($state);
+        });
+
+        static::macro('cities', function () {
+            ini_set('memory_limit', -1);
+            $f = fopen(dirname(dirname(__DIR__)).'/data/'.$this->pluck('country code')[0].'.txt', 'r');
+            $state = [];
+            if ($f) {
+                while (($line = fgets($f)) !== false) {
+                    $tmp = explode("\t", $line);
+                    $tmp = array_combine($this->stateCityKeys, $tmp);
+                    if ($tmp['feature class'] == 'P' && $tmp['admin1 code'] == $this->pluck('admin1 code')[0]) {
+                        $state[] = $tmp;
+                    }
+                }
+            }
+
+            return new Collection($state);
+        });
     }
 
     /**
      * Take the first item.
      *
      * @param callable|null $callback
-     * @param null $default
+     * @param null          $default
+     *
      * @return mixed|Collection
      */
     public function first(callable $callback = null, $default = null)
@@ -94,10 +95,11 @@ class Collection extends IlluminateCollection
     /**
      * Dynamically access collection proxies.
      *
-     * @param  string  $key
-     * @return mixed
+     * @param string $key
      *
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function __get($key)
     {
@@ -113,7 +115,7 @@ class Collection extends IlluminateCollection
             return $this->items[$key];
         }
 
-        if (! in_array($key, static::$proxies)) {
+        if (!in_array($key, static::$proxies)) {
             throw new Exception("Property [{$key}] does not exist on this collection instance.");
         }
 
