@@ -6,19 +6,19 @@ use Asahasrabuddhe\WorldData\Support\CountryRepository;
 
 class WorldDataService
 {
-	
-	protected $countryRepository;
+    protected $countryRepository;
 
-	public function __construct(CountryRepository $repository)
-	{
-		$this->countryRepository = $repository;
-	}
+    public function __construct(CountryRepository $repository)
+    {
+        $this->countryRepository = $repository;
+    }
 
     /**
      * Call a method.
      *
      * @param $name
      * @param array $arguments
+     *
      * @return bool|mixed
      */
     public function __call($name, array $arguments = [])
