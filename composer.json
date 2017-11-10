@@ -1,6 +1,6 @@
 {
     "name": "asahasrabuddhe/world-data",
-    "type": "Laravel Package",
+    "type": "package",
     "description": "A package that contains data about the various countries, states and cities in the world.",
     "keywords": ["laravel", "countries", "city", "state", "province"],
     "homepage": "https://github.com/asahasrabuddhe/world-data",
