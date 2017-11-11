@@ -18,33 +18,6 @@ class Collection extends IlluminateCollection
     public function __construct($items = [])
     {
         parent::__construct($items);
-
-        $this->registerMacros();
-    }
-
-
-	public function registerMacros()
-    {
-    	static::macro('states', function() {
-    		// return new Collection($state);
-    	});
-
-    	static::macro('cities', function() {
-    		ini_set('memory_limit', -1);
-    		$f = fopen( dirname(dirname(__DIR__)) . '/data/' . $this->pluck('country code')[0] . '.txt', 'r' );
-    		$state = [];
-    		if( $f )
-			{
-				while( ($line = fgets($f)) !== false )
-				{
-					$tmp = explode("\t", $line);
-					$tmp = array_combine($this->stateCityKeys, $tmp);
-					if( $tmp['feature class'] == 'P' && $tmp['admin1 code'] == $this->pluck('admin1 code')[0] )
-						$state[] = $tmp;
-				}
-			}
-    		return new Collection($state);
-    	});
     }
 
     /**
@@ -73,21 +46,24 @@ class Collection extends IlluminateCollection
             return $this->{$key};
         }
 
-        if( count($this->items) == 1 ) {
-            if( $key == 'states' )
-                return WorldData::states($this->ISO);
-            else if ( $key == 'cities' )
-                return 2;
-            else
-                return $this->first()->{$key};
-        }
-
         if (isset($this->items[$key])) {
             if (is_array($this->items[$key])) {
                 return $this->make($this->items[$key]);
             }
 
             return $this->items[$key];
+        }
+
+        if( count($this->items) == 1 ) {
+            if( $key == 'states' ) {
+                return WorldData::states($this->ISO);
+            }
+            else if ( $key == 'cities' ) {
+                return WorldData::cities($this->{'country code'}, $this->{'admin1 code'});
+            }
+            else {
+                return $this->first()->{$key};
+            }
         }
 
         if (! in_array($key, static::$proxies)) {

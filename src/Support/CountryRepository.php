@@ -6,10 +6,13 @@ use Asahasrabuddhe\WorldData\Support\Collection;
 use Asahasrabuddhe\WorldData\Support\Repository;
 
 use Asahasrabuddhe\WorldData\Support\StateRepository;
+use Asahasrabuddhe\WorldData\Support\CityRepository;
 
 class CountryRepository extends Repository
 {
 	protected $stateRepository;
+
+	protected $cityRepository;
 
 	public function __construct()
 	{
@@ -64,5 +67,11 @@ class CountryRepository extends Repository
 	{
 		$this->stateRepository = new StateRepository($countryCode);
 		return $this->stateRepository->all();
+	}
+
+	public function cities(string $countryCode, string $stateCode)
+	{
+		$this->cityRepository = new CityRepository($countryCode, $stateCode);
+		return $this->cityRepository->all();
 	}
 }
