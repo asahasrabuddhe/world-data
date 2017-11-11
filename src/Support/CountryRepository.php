@@ -3,54 +3,41 @@
 namespace Asahasrabuddhe\WorldData\Support;
 
 use Asahasrabuddhe\WorldData\Support\Collection;
+use Asahasrabuddhe\WorldData\Support\Repository;
 
-class CountryRepository
+class CountryRepository extends Repository
 {
-	protected $countriesJson;
-
-	protected $countries = [];
-
-	protected $countryKeys = [
-		'ISO',
-		'ISO3',
-		'ISO_Numeric',
-		'fips',
-		'name',
-		'capital',
-		'area',
-		'population',
-		'continent',
-		'tld',
-		'currencyCode',
-		'currencyName',
-		'phone',
-		'postalCodeFormat',
-		'postalCodeRegex',
-		'languages',
-		'geonameid',
-		'neighbours',
-		'equivalentFipsCode'
-	];
-
 	public function __construct()
 	{
-		$this->loadCountries();
+		$this->resourceKeys = [
+			'ISO',
+			'ISO3',
+			'ISO_Numeric',
+			'fips',
+			'name',
+			'capital',
+			'area',
+			'population',
+			'continent',
+			'tld',
+			'currencyCode',
+			'currencyName',
+			'phone',
+			'postalCodeFormat',
+			'postalCodeRegex',
+			'languages',
+			'geonameid',
+			'neighbours',
+			'equivalentFipsCode'
+		];
 	}
 
-	public function call($name, $arguments)
-	{
-		$result = call_user_func_array([$this, $name], $arguments);
-
-		return $result;
-	}
-
-	public function collection($country)
-	{
-		return new Collection($country);
-	}
-
+	/**
+	 * {@inheritdoc}
+	 */
 	public function loadCountries()
 	{
+		ini_set('memory_limit', '-1');
 		$f = fopen( dirname(dirname(__DIR__)) . '/data/countryInfo.txt', 'r' );
 		if( $f )
 		{
@@ -59,20 +46,10 @@ class CountryRepository
 				if( $line[0] == '#' )
 					continue;
 				$tmp = explode("\t", $line);
-				$tmp = array_combine($this->countryKeys, $tmp);
-				$this->countries[] = new Collection($tmp);
+				$tmp = array_combine($this->resourceKeys, $tmp);
+				$this->resource[] = new Collection($tmp);
 			}
 		}
-		$this->countriesJson = json_encode($this->countries);
+		$this->resourceJson = json_encode($this->resource);
 	}
-
-	public function all()
-	{
-		return $this->collection($this->countries);
-	}
-
-	public function __call($name, array $arguments = [])
-    {
-        return call_user_func_array([$this->all(), $name], $arguments);
-    }
 }
