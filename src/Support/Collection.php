@@ -7,29 +7,10 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\HigherOrderCollectionProxy;
 use Illuminate\Support\Collection as IlluminateCollection;
 
+use Asahasrabuddhe\WorldData\Facades\WorldDataFacade as WorldData;
+
 class Collection extends IlluminateCollection
 {
-	private $stateCityKeys = [
-		'geonameid',
-		'name',
-		'asciiname',
-		'alternatenames',
-		'latitude',
-		'longitude',
-		'feature class',
-		'feature code',
-		'country code',
-		'cc2',
-		'admin1 code',
-		'admin2 code',
-		'admin3 code',
-		'admin4 code',
-		'population',
-		'elevation',
-		'dem',
-		'timezone',
-		'modification date'
-	];
 	/**
      * Collection constructor.
      * @param array $items
@@ -45,20 +26,7 @@ class Collection extends IlluminateCollection
 	public function registerMacros()
     {
     	static::macro('states', function() {
-    		ini_set('memory_limit', -1);
-    		$f = fopen( dirname(dirname(__DIR__)) . '/data/' . $this->pluck('ISO')[0] . '.txt', 'r' );
-    		$state = [];
-    		if( $f )
-			{
-				while( ($line = fgets($f)) !== false )
-				{
-					$tmp = explode("\t", $line);
-					$tmp = array_combine($this->stateCityKeys, $tmp);
-					if( $tmp['feature class'] == 'A' && $tmp['feature code'] == 'ADM1' )
-						$state[] = $tmp;
-				}
-			}
-    		return new Collection($state);
+    		// return new Collection($state);
     	});
 
     	static::macro('cities', function() {
@@ -103,6 +71,15 @@ class Collection extends IlluminateCollection
     {
         if (property_exists($this, $key)) {
             return $this->{$key};
+        }
+
+        if( count($this->items) == 1 ) {
+            if( $key == 'states' )
+                return WorldData::states($this->ISO);
+            else if ( $key == 'cities' )
+                return 2;
+            else
+                return $this->first()->{$key};
         }
 
         if (isset($this->items[$key])) {

@@ -57,7 +57,7 @@ abstract class Repository
 	 */
 	public function __call($name, $arguments)
 	{
-		return call_user_func_array([$this->all(), $name], ...$arguments);
+		return call_user_func_array([$this->all(), $name], $arguments);
 	}
 
 	/**
@@ -67,9 +67,9 @@ abstract class Repository
 	 * @param  array $arguments
 	 * @return bool|mixed
 	 */
-	protected function call( $name, $arguments )
+	public function call( $name, $arguments )
 	{
-		return call_user_func_array([$this, $name], ...$arguments);
+		return call_user_func_array([$this, $name], $arguments);
 	}
 
 	/**
@@ -77,7 +77,5 @@ abstract class Repository
 	 *
 	 * @return void
 	 */
-	abstract protected function load()
-
-
+	abstract protected function load();
 }

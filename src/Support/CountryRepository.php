@@ -5,8 +5,12 @@ namespace Asahasrabuddhe\WorldData\Support;
 use Asahasrabuddhe\WorldData\Support\Collection;
 use Asahasrabuddhe\WorldData\Support\Repository;
 
+use Asahasrabuddhe\WorldData\Support\StateRepository;
+
 class CountryRepository extends Repository
 {
+	protected $stateRepository;
+
 	public function __construct()
 	{
 		$this->resourceKeys = [
@@ -30,12 +34,14 @@ class CountryRepository extends Repository
 			'neighbours',
 			'equivalentFipsCode'
 		];
+
+		$this->load();
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function loadCountries()
+	public function load()
 	{
 		ini_set('memory_limit', '-1');
 		$f = fopen( dirname(dirname(__DIR__)) . '/data/countryInfo.txt', 'r' );
@@ -50,6 +56,13 @@ class CountryRepository extends Repository
 				$this->resource[] = new Collection($tmp);
 			}
 		}
+		fclose( $f );
 		$this->resourceJson = json_encode($this->resource);
+	}
+
+	public function states(string $countryCode)
+	{
+		$this->stateRepository = new StateRepository($countryCode);
+		return $this->stateRepository->all();
 	}
 }

@@ -5,6 +5,7 @@ namespace Asahasrabuddhe\WorldData\Providers;
 use Illuminate\Support\ServiceProvider;
 use Asahasrabuddhe\WorldData\WorldDataService;
 use Asahasrabuddhe\WorldData\Console\Command\DownloadDataCommand;
+
 use Asahasrabuddhe\WorldData\Support\CountryRepository;
 
 class WorldDataServiceProvider extends ServiceProvider
