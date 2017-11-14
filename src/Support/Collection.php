@@ -3,9 +3,8 @@
 namespace Asahasrabuddhe\WorldData\Support;
 
 use Exception;
-use Illuminate\Support\Arr;
-use Illuminate\Support\HigherOrderCollectionProxy;
 use Illuminate\Support\Collection as IlluminateCollection;
+use Illuminate\Support\HigherOrderCollectionProxy;
 
 use Asahasrabuddhe\WorldData\Facades\WorldDataFacade as WorldData;
 
@@ -13,6 +12,7 @@ class Collection extends IlluminateCollection
 {
 	/**
      * Collection constructor.
+     *
      * @param array $items
      */
     public function __construct($items = [])
@@ -24,7 +24,8 @@ class Collection extends IlluminateCollection
      * Take the first item.
      *
      * @param callable|null $callback
-     * @param null $default
+     * @param null          $default
+     *
      * @return mixed|Collection
      */
     public function first(callable $callback = null, $default = null)
@@ -35,10 +36,11 @@ class Collection extends IlluminateCollection
     /**
      * Dynamically access collection proxies.
      *
-     * @param  string  $key
-     * @return mixed
+     * @param string $key
      *
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function __get($key)
     {
