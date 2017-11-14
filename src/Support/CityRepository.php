@@ -50,8 +50,9 @@ class CityRepository extends Repository
 			{
 				$tmp = explode("\t", $line);
 				$tmp = array_combine($this->resourceKeys, $tmp);
-				if( $tmp['feature class'] == 'P' && $tmp['admin1 code'] == $this->stateCode )
+				if( $tmp['feature class'] == 'P' && $tmp['admin1 code'] == $this->stateCode  ){
 					$this->resource[] = $tmp;
+				}
 			}
 		}
 		fclose($f);

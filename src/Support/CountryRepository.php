@@ -66,12 +66,12 @@ class CountryRepository extends Repository
 	public function states(string $countryCode)
 	{
 		$this->stateRepository = new StateRepository($countryCode);
-		return $this->stateRepository->all();
+		return $this->stateRepository->all()->unique('asciiname');
 	}
 
 	public function cities(string $countryCode, string $stateCode)
 	{
 		$this->cityRepository = new CityRepository($countryCode, $stateCode);
-		return $this->cityRepository->all();
+		return $this->cityRepository->all()->unique('asciiname');
 	}
 }
